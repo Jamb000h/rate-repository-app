@@ -59,6 +59,7 @@ const ItemSeparator = () => <View style={styles.separator} />;
 const RepositoryList = () => {
   return (
     <FlatList
+      style={{ backgroundColor: "#898989" }}
       data={repositories}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={(item) => <RepositoryItem item={item} />}
