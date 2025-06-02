@@ -18,6 +18,9 @@ const styles = StyleSheet.create({
   colorButton: {
     color: theme.colors.white,
   },
+  colorError: {
+    color: theme.colors.error,
+  },
   fontSizeSubheading: {
     fontSize: theme.fontSizes.subheading,
   },
@@ -30,6 +33,7 @@ const Text = ({ color, fontSize, fontWeight, style, ...props }) => {
   const textStyle = [
     styles.text,
     color === "button" && styles.colorButton,
+    color === "error" && styles.colorError,
     color === "textSecondary" && styles.colorTextSecondary,
     color === "primary" && styles.colorPrimary,
     fontSize === "subheading" && styles.fontSizeSubheading,
@@ -42,6 +46,10 @@ const Text = ({ color, fontSize, fontWeight, style, ...props }) => {
 
 export const Button = (props) => {
   return <Text color="button" fontWeight="bold" {...props} />;
+};
+
+export const ErrorText = (props) => {
+  return <Text color="error" {...props} />;
 };
 
 export default Text;

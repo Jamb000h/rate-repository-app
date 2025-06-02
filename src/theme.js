@@ -6,11 +6,13 @@ const colors = {
   appBar: "#24292e",
   border: {
     default: "#586069",
+    error: "#d73a4a",
   },
   textPrimary: "#24292e",
   textSecondary: "#586069",
   primary: "#0366d6",
   white: "#ffffff",
+  error: "#d73a4a",
 };
 
 const theme = {
@@ -40,7 +42,8 @@ const theme = {
     borderColor: colors.border.default,
     borderWidth: 1,
     borderRadius: 5,
-    marginBottom: 10,
+    marginBottom: 5,
+    marginTop: 5,
     paddingHorizontal: 8,
   },
   button: {
