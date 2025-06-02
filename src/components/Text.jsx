@@ -15,6 +15,9 @@ const styles = StyleSheet.create({
   colorPrimary: {
     color: theme.colors.primary,
   },
+  colorButton: {
+    color: theme.colors.white,
+  },
   fontSizeSubheading: {
     fontSize: theme.fontSizes.subheading,
   },
@@ -26,6 +29,7 @@ const styles = StyleSheet.create({
 const Text = ({ color, fontSize, fontWeight, style, ...props }) => {
   const textStyle = [
     styles.text,
+    color === "button" && styles.colorButton,
     color === "textSecondary" && styles.colorTextSecondary,
     color === "primary" && styles.colorPrimary,
     fontSize === "subheading" && styles.fontSizeSubheading,
@@ -34,6 +38,10 @@ const Text = ({ color, fontSize, fontWeight, style, ...props }) => {
   ];
 
   return <NativeText style={textStyle} {...props} />;
+};
+
+export const Button = (props) => {
+  return <Text color="button" fontWeight="bold" {...props} />;
 };
 
 export default Text;
