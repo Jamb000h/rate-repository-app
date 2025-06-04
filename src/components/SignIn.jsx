@@ -4,6 +4,7 @@ import * as yup from "yup";
 import { Button, ErrorText } from "./Text";
 import useSignIn from "../hooks/useSignIn";
 import theme from "../theme";
+import { useNavigate } from "react-router-native";
 
 const validationSchema = yup.object().shape({
   username: yup.string().required("Username is required"),
@@ -76,13 +77,14 @@ const SignInForm = ({ onSubmit }) => {
 
 const SignIn = () => {
   const [signIn] = useSignIn();
+  const navigate = useNavigate("/");
 
   const onSubmit = async (values) => {
     const { username, password } = values;
 
     try {
-      const { data } = await signIn({ username, password });
-      console.log(data);
+      await signIn({ username, password });
+      navigate("/");
     } catch (e) {
       console.log(e);
     }
