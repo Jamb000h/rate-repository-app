@@ -15,3 +15,12 @@ export const GET_REPOSITORIES = gql`
 
   ${REPOSITORY_DETAILS}
 `;
+
+export const GET_AUTHENTICATED_USER = gql`
+  query {
+    me {
+      id
+      username
+    }
+  }
+`;
