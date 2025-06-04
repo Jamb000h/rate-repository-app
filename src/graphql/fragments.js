@@ -12,3 +12,10 @@ export const REPOSITORY_DETAILS = gql`
     ratingAverage
   }
 `;
+
+export const AUTHENTICATE_INPUT = gql`
+  input AuthenticateInput {
+    username: String!
+    password: String!
+  }
+`;
