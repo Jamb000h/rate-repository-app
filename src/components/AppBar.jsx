@@ -53,8 +53,9 @@ const AppBar = () => {
         <AppBarTab tabTitle="Repositories" tabTarget="/" />
         {authenticatedUser ? (
           <>
-            <AppBarAction actionTitle="Sign out" action={signOut} />
             <AppBarTab tabTitle="Create a review" tabTarget="/review" />
+            <AppBarTab tabTitle="My reviews" tabTarget="/my-reviews" />
+            <AppBarAction actionTitle="Sign out" action={signOut} />
           </>
         ) : (
           <>

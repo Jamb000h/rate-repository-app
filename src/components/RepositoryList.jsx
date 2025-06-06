@@ -1,19 +1,11 @@
-import { FlatList, View, StyleSheet, TextInput } from "react-native";
-import React, { useEffect, useState } from "react";
+import { FlatList, View, TextInput } from "react-native";
+import React, { useState } from "react";
 import { Link } from "react-router-native";
 import { useDebounce } from "use-debounce";
 import { Picker } from "@react-native-picker/picker";
 import RepositoryItem from "./RepositoryItem";
 import useRepositories from "../hooks/useRepositories";
-import theme from "../theme";
-
-const styles = StyleSheet.create({
-  separator: {
-    height: 10,
-  },
-});
-
-const ItemSeparator = () => <View style={styles.separator} />;
+import ItemSeparator from "./ItemSeparator";
 
 const RepositoryOrdering = ({ orderingRule, setOrderingRule }) => {
   return (

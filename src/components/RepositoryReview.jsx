@@ -45,7 +45,7 @@ const initialValues = {
   text: "",
 };
 
-const RepositorytextForm = ({ onSubmit }) => {
+const CreateReviewForm = ({ onSubmit }) => {
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -108,7 +108,7 @@ const RepositorytextForm = ({ onSubmit }) => {
   );
 };
 
-const Repositorytext = () => {
+const CreateReview = () => {
   const [createReview] = useCreateReview();
   const navigate = useNavigate("/");
 
@@ -129,9 +129,9 @@ const Repositorytext = () => {
 
   return (
     <>
-      <RepositorytextForm onSubmit={onSubmit} />
+      <CreateReviewForm onSubmit={onSubmit} />
     </>
   );
 };
 
-export default Repositorytext;
+export default CreateReview;

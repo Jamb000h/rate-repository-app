@@ -40,10 +40,15 @@ export const GET_REPOSITORY = gql`
 `;
 
 export const GET_AUTHENTICATED_USER = gql`
-  query {
+  query ($includeReviews: Boolean = false) {
     me {
       id
       username
+      reviews @include(if: $includeReviews) {
+        ...ReviewDetails
+      }
     }
   }
+
+  ${REVIEW_DETAILS}
 `;

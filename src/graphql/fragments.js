@@ -26,6 +26,10 @@ export const REVIEW_DETAILS = gql`
           id
           username
         }
+        repository {
+          id
+          fullName
+        }
       }
     }
   }
