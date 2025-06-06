@@ -19,6 +19,7 @@ const initialValues = {
 const styles = {
   form: {
     padding: 20,
+    backgroundColor: theme.colors.white,
   },
   inputWrapper: {
     marginBottom: 10,
