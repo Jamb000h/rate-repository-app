@@ -1,9 +1,11 @@
-import { FlatList, View, StyleSheet } from "react-native";
-import { useState } from "react";
+import { FlatList, View, StyleSheet, TextInput } from "react-native";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-native";
+import { useDebounce } from "use-debounce";
 import { Picker } from "@react-native-picker/picker";
 import RepositoryItem from "./RepositoryItem";
 import useRepositories from "../hooks/useRepositories";
+import theme from "../theme";
 
 const styles = StyleSheet.create({
   separator: {
@@ -18,6 +20,7 @@ const RepositoryOrdering = ({ orderingRule, setOrderingRule }) => {
     <Picker
       selectedValue={orderingRule}
       onValueChange={(itemValue) => setOrderingRule(itemValue)}
+      style={{ padding: 10 }}
     >
       <Picker.Item label="Latest repositories" value="CREATED_AT_DESC" />
       <Picker.Item
@@ -32,52 +35,86 @@ const RepositoryOrdering = ({ orderingRule, setOrderingRule }) => {
   );
 };
 
-export const RepositoryListContainer = ({
-  repositories,
-  orderingRule,
-  setOrderingRule,
-}) => {
-  const repositoryNodes = repositories
-    ? repositories.edges.map((edge) => edge.node)
-    : [];
-
+const RepositorySearch = ({ searchKeyword, setSearchKeyword }) => {
   return (
-    <FlatList
-      data={repositoryNodes}
-      ItemSeparatorComponent={ItemSeparator}
-      ListHeaderComponent={
+    <View style={{ padding: 10 }}>
+      <TextInput
+        style={{ padding: 10 }}
+        value={searchKeyword}
+        onChangeText={setSearchKeyword}
+        placeholder="Search repositories..."
+      />
+    </View>
+  );
+};
+
+export class RepositoryListContainer extends React.Component {
+  renderHeader = () => {
+    const { orderingRule, setOrderingRule, searchKeyword, setSearchKeyword } =
+      this.props;
+
+    return (
+      <>
+        <RepositorySearch
+          searchKeyword={searchKeyword}
+          setSearchKeyword={setSearchKeyword}
+        />
+
         <RepositoryOrdering
           orderingRule={orderingRule}
           setOrderingRule={setOrderingRule}
         />
-      }
-      renderItem={(item) => {
-        return (
-          <>
-            <Link to={"/repository/" + item.item.id}>
-              <RepositoryItem repository={item.item} />
-            </Link>
-          </>
-        );
-      }}
-    />
-  );
-};
+      </>
+    );
+  };
+
+  render() {
+    const { repositories } = this.props;
+    const repositoryNodes = repositories
+      ? repositories.edges.map((edge) => edge.node)
+      : [];
+
+    return (
+      <FlatList
+        data={repositoryNodes}
+        ItemSeparatorComponent={ItemSeparator}
+        ListHeaderComponent={this.renderHeader}
+        renderItem={(item) => {
+          return (
+            <>
+              <Link to={"/repository/" + item.item.id}>
+                <RepositoryItem repository={item.item} />
+              </Link>
+            </>
+          );
+        }}
+      />
+    );
+  }
+}
 
 const RepositoryList = () => {
   const [orderingRule, setOrderingRule] = useState("CREATED_AT_DESC");
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [debouncedSearchKeywod] = useDebounce(searchKeyword, 500);
 
   // Assume that orderingRule is in the format "<ORDER_BY>_<DIRECTION>"
   const orderBy = orderingRule.slice(0, orderingRule.lastIndexOf("_"));
   const orderDirection = orderingRule.slice(orderingRule.lastIndexOf("_") + 1);
 
-  const { repositories } = useRepositories({ orderBy, orderDirection });
+  const { repositories } = useRepositories({
+    orderBy,
+    orderDirection,
+    searchKeyword: debouncedSearchKeywod,
+  });
 
   return (
     <RepositoryListContainer
       repositories={repositories}
       orderingRule={orderingRule}
       setOrderingRule={setOrderingRule}
+      searchKeyword={searchKeyword}
+      setSearchKeyword={setSearchKeyword}
     />
   );
 };
