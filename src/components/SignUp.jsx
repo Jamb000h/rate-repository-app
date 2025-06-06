@@ -2,6 +2,7 @@ import { Pressable, TextInput, View } from "react-native";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { Button, ErrorText } from "./Text";
+import useSignUp from "../hooks/useSignUp";
 import useSignIn from "../hooks/useSignIn";
 import theme from "../theme";
 import { useNavigate } from "react-router-native";
@@ -9,11 +10,16 @@ import { useNavigate } from "react-router-native";
 const validationSchema = yup.object().shape({
   username: yup.string().required("Username is required"),
   password: yup.string().required("Password is required"),
+  passwordConfirmation: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords must match")
+    .required("Password confirmation is required"),
 });
 
 const initialValues = {
   username: "",
   password: "",
+  passwordConfirmation: "",
 };
 
 const styles = {
@@ -36,7 +42,7 @@ const styles = {
   },
 };
 
-export const SignInForm = ({ onSubmit }) => {
+export const SignUpForm = ({ onSubmit }) => {
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -69,14 +75,33 @@ export const SignInForm = ({ onSubmit }) => {
           <ErrorText>{formik.errors.password}</ErrorText>
         )}
       </View>
+      <View style={styles.inputWrapper}>
+        <TextInput
+          placeholder="Password confirmation"
+          secureTextEntry
+          value={formik.values.passwordConfirmation}
+          onChangeText={formik.handleChange("passwordConfirmation")}
+          style={
+            formik.errors.passwordConfirmation
+              ? styles.inputError
+              : styles.input
+          }
+          error={true}
+        />
+        {formik.touched.passwordConfirmation &&
+          formik.errors.passwordConfirmation && (
+            <ErrorText>{formik.errors.passwordConfirmation}</ErrorText>
+          )}
+      </View>
       <Pressable style={styles.button} onPress={formik.handleSubmit}>
-        <Button>Sign in</Button>
+        <Button>Sign up</Button>
       </Pressable>
     </View>
   );
 };
 
-const SignIn = () => {
+const SignUp = () => {
+  const [signUp] = useSignUp();
   const [signIn] = useSignIn();
   const navigate = useNavigate();
 
@@ -84,6 +109,7 @@ const SignIn = () => {
     const { username, password } = values;
 
     try {
+      await signUp({ username, password });
       await signIn({ username, password });
       navigate("/");
     } catch (e) {
@@ -93,9 +119,9 @@ const SignIn = () => {
 
   return (
     <>
-      <SignInForm onSubmit={onSubmit} />
+      <SignUpForm onSubmit={onSubmit} />
     </>
   );
 };
 
-export default SignIn;
+export default SignUp;

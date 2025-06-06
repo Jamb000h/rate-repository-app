@@ -57,7 +57,10 @@ const AppBar = () => {
             <AppBarTab tabTitle="Create a review" tabTarget="/review" />
           </>
         ) : (
-          <AppBarTab tabTitle="Sign In" tabTarget="/signin" />
+          <>
+            <AppBarTab tabTitle="Sign In" tabTarget="/signin" />
+            <AppBarTab tabTitle="Sign Up" tabTarget="/signup" />
+          </>
         )}
       </ScrollView>
     </View>
