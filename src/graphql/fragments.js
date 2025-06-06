@@ -14,6 +14,23 @@ export const REPOSITORY_DETAILS = gql`
   }
 `;
 
+export const REVIEW_DETAILS = gql`
+  fragment ReviewDetails on ReviewConnection {
+    edges {
+      node {
+        id
+        text
+        rating
+        createdAt
+        user {
+          id
+          username
+        }
+      }
+    }
+  }
+`;
+
 export const AUTHENTICATE_INPUT = gql`
   input AuthenticateInput {
     username: String!
