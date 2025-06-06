@@ -7,7 +7,7 @@ const useRepositories = () => {
     fetchPolicy: "cache-and-network",
   });
 
-  return { repositories: loading ? undefined : data.repositories, loading };
+  return { repositories: loading ? undefined : data.repositories };
 };
 
 export default useRepositories;

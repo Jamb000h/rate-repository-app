@@ -1,5 +1,5 @@
-import { View, Image, StyleSheet } from "react-native";
-import Text from "./Text";
+import { View, Image, StyleSheet, Pressable, Linking } from "react-native";
+import Text, { Button } from "./Text";
 import theme from "../theme";
 
 const styles = StyleSheet.create({
@@ -41,6 +41,9 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     gap: 5,
   },
+  button: {
+    ...theme.button,
+  },
 });
 
 const prettifyCount = (count) => {
@@ -63,43 +66,44 @@ const RepositoryStatsItem = ({ label, value }) => {
   );
 };
 
-const RepositoryItem = ({ item }) => {
-  const repositoryItem = item.item;
+export const RepositoryItem = ({ repository, showUrl }) => {
+  if (!repository) {
+    return null;
+  }
 
   return (
     <View testID="repositoryItem" style={styles.container}>
       <View style={theme.horizontalContainer}>
         <Image
           source={{
-            uri: repositoryItem.ownerAvatarUrl,
+            uri: repository.ownerAvatarUrl,
           }}
           style={styles.avatar}
         />
         <View style={styles.repositoryDetails}>
           <Text fontWeight="bold" fontSize="subheading">
-            {repositoryItem.fullName}
+            {repository.fullName}
           </Text>
           <Text color="textSecondary" fontSize="subheading">
-            {repositoryItem.description}
+            {repository.description}
           </Text>
-          <Text style={styles.language}>{repositoryItem.language}</Text>
+          <Text style={styles.language}>{repository.language}</Text>
         </View>
       </View>
       <View style={styles.repositoryStats}>
-        <RepositoryStatsItem
-          label="Stars"
-          value={repositoryItem.stargazersCount}
-        />
-        <RepositoryStatsItem label="Forks" value={repositoryItem.forksCount} />
-        <RepositoryStatsItem
-          label="Reviews"
-          value={repositoryItem.reviewCount}
-        />
-        <RepositoryStatsItem
-          label="Rating"
-          value={repositoryItem.ratingAverage}
-        />
+        <RepositoryStatsItem label="Stars" value={repository.stargazersCount} />
+        <RepositoryStatsItem label="Forks" value={repository.forksCount} />
+        <RepositoryStatsItem label="Reviews" value={repository.reviewCount} />
+        <RepositoryStatsItem label="Rating" value={repository.ratingAverage} />
       </View>
+      {showUrl && (
+        <Pressable
+          style={styles.button}
+          onPress={() => Linking.openURL(repository.url)}
+        >
+          <Button>Open in GitHub</Button>
+        </Pressable>
+      )}
     </View>
   );
 };
