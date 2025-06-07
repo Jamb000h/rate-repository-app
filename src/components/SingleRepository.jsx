@@ -11,11 +11,15 @@ const RepositoryInfo = ({ repository }) => {
 
 const SingleRepository = () => {
   const { id } = useParams();
-  const { repository } = useRepository(id);
+  const { repository, fetchMore } = useRepository({ id, first: 4 });
 
   const reviews = repository
     ? repository.reviews.edges.map((edge) => edge.node)
     : [];
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return (
     <FlatList
@@ -25,6 +29,7 @@ const SingleRepository = () => {
       ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
       ListHeaderComponentStyle={{ marginBottom: 10 }}
       ItemSeparatorComponent={ItemSeparator}
+      onEndReached={onEndReach}
     />
   );
 };

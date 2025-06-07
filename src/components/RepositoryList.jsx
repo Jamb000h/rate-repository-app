@@ -61,7 +61,7 @@ export class RepositoryListContainer extends React.Component {
   };
 
   render() {
-    const { repositories } = this.props;
+    const { repositories, onEndReach } = this.props;
     const repositoryNodes = repositories
       ? repositories.edges.map((edge) => edge.node)
       : [];
@@ -71,6 +71,7 @@ export class RepositoryListContainer extends React.Component {
         data={repositoryNodes}
         ItemSeparatorComponent={ItemSeparator}
         ListHeaderComponent={this.renderHeader}
+        onEndReached={onEndReach}
         renderItem={(item) => {
           return (
             <>
@@ -94,11 +95,16 @@ const RepositoryList = () => {
   const orderBy = orderingRule.slice(0, orderingRule.lastIndexOf("_"));
   const orderDirection = orderingRule.slice(orderingRule.lastIndexOf("_") + 1);
 
-  const { repositories } = useRepositories({
+  const { repositories, fetchMore } = useRepositories({
+    first: 3,
     orderBy,
     orderDirection,
     searchKeyword: debouncedSearchKeywod,
   });
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return (
     <RepositoryListContainer
@@ -107,6 +113,7 @@ const RepositoryList = () => {
       setOrderingRule={setOrderingRule}
       searchKeyword={searchKeyword}
       setSearchKeyword={setSearchKeyword}
+      onEndReach={onEndReach}
     />
   );
 };

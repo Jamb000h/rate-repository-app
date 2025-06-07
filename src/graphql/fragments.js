@@ -35,6 +35,13 @@ export const REVIEW_DETAILS = gql`
   }
 `;
 
+export const PAGE_INFO = gql`
+  fragment PageInfo on PageInfo {
+    endCursor
+    hasNextPage
+  }
+`;
+
 export const AUTHENTICATE_INPUT = gql`
   input AuthenticateInput {
     username: String!
